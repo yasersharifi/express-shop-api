@@ -4,7 +4,7 @@ class HomeController {
         // error.message = 'Server Failed !';
         // error.status = 510;
         // throw error;
-        res.status(200).send('<h1>Home Route !!!</h1>');
+        res.status(200).json({ route: 'index' });
     }
 }
 
