@@ -4,6 +4,7 @@ dotenv.config();
 const appRouter = require('./router');
 const logger = require('./middleware/logger.middleware');
 const setupCORS = require('./middleware/setup-cors.middleware');
+const handleError = require('./middleware/handle-error.middleware');
 
 const app = express();
 
@@ -16,5 +17,7 @@ setupCORS(app);
 // handle application routers
 appRouter(app)
 
+// handle error request
+handleError(app);
 
 module.exports = app;

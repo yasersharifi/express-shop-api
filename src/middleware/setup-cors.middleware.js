@@ -1,4 +1,3 @@
-
 function setupCORS(app) {
     app.use((req, res, next) => {
         res.header('Content-Type', 'application/json');
