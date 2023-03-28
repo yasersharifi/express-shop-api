@@ -1,14 +1,6 @@
 const User = require('./../entity/user.entity');
 
 class UserModel {
-    async findAll() {
-        return await User.findAll({
-            order: [
-                ['id', 'DESC']
-            ]
-        });
-    }
-
     async create(user) {
         const { fullName, email, mobile, role = 'user', password } = user;
 
@@ -23,6 +15,30 @@ class UserModel {
         const { password: userPass, ...newUser} = await userModel.save();
 
         return newUser;
+    }
+
+    async findAll() {
+        return await User.findAll({
+            order: [
+                ['id', 'DESC']
+            ]
+        });
+    }
+
+    async findOne(userId) {
+        return await User.findOne({
+            where: {
+                id: userId,
+            },
+        })
+    }
+
+    async findOneByEmail(email) {
+        return await User.findOne({
+            where: {
+                email,
+            },
+        })  
     }
 }
 
