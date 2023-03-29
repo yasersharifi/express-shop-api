@@ -2,6 +2,7 @@ const userModel = require('../model/user.model');
 const bcrypt = require('bcrypt');
 const { validateCreateUser } = require('../validate/user/create-user.validate');
 const { validateLoginUser } = require('../validate/user/login-user.validate');
+const { validateRegisterUser } = require('../validate/user/register-user.validate.js');
 const jwt = require('jsonwebtoken');
 
 class UserController {
@@ -92,6 +93,33 @@ class UserController {
         } catch (err) {
             next(err);
         }
+    }
+
+    async register(req, res, next) {
+        const { email, password } = req.body;
+
+        try {
+            // validate body data
+            await validateRegisterUser({ email, password });
+
+            // hash password
+            const salt = 10;
+            const passwordHash = await bcrypt.hash(password, salt);
+
+            // save user in db
+            const newUser = await userModel.create({ email, password: passwordHash });
+
+            return res
+                .status(200)
+                .json({
+                    status: 'success',
+                    data: newUser,
+                })
+        } catch (err) {
+            next(err);
+        }
+
+
     }
 
     async isAdmin(req, res, next) {

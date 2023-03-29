@@ -18,7 +18,8 @@ const UserEntity = sequelize.define(
         },
         role: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
+            defaultValue: 'user',
         },
         password: {
             type: DataTypes.STRING,
