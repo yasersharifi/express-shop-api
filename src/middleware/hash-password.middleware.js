@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 async function hashPassword(req, res, res) {
     try {
         const { password } = req.body;

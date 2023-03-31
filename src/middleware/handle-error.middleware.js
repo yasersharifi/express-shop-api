@@ -1,4 +1,4 @@
-const serializeYupErr = require('./../utils/serializeYepErr');
+const serializeYupErr = require('@utils/serializeYepErr');
 
 function handleError(app) {
     app.use((req, res, next) => {

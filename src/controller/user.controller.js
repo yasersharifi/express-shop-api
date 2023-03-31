@@ -1,10 +1,8 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const userModel = require('@model/user.model');
 const { validateChangePasswordUser } = require('@validate/user/change-password-user.validate.js');
 
 class UserController {
-
     async create(req, res, next) {
         try {
             const body = req.body;
