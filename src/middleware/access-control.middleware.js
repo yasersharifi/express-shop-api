@@ -11,7 +11,6 @@ const grants = {
     },
     user: {
         users: {
-            'create:own': ['*'],
             'read:own': ['*'],
             'update:own': ['*'],
         }

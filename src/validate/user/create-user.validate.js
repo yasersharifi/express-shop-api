@@ -8,8 +8,13 @@ const createUserSchema = Yup.object().shape({
     password: Yup.string().required().min(8).label('Password'),
 });
 
-async function validateCreateUser(data) {
-    return await createUserSchema.validate(data, { abortEarly: false });
+async function validateCreateUser(req, res, next) {
+    try {
+        await createUserSchema.validate(req.body, { abortEarly: false });
+        next();
+    } catch (err) {
+        next(err);
+    }
 }
 
-module.exports = { validateCreateUser }
+module.exports = validateCreateUser;

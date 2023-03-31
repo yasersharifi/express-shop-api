@@ -1,18 +1,13 @@
-const userModel = require('../model/user.model');
 const bcrypt = require('bcrypt');
-const { validateCreateUser } = require('../validate/user/create-user.validate');
-const { validateLoginUser } = require('../validate/user/login-user.validate');
-const { validateRegisterUser } = require('../validate/user/register-user.validate.js');
 const jwt = require('jsonwebtoken');
+const userModel = require('@model/user.model');
+const { validateChangePasswordUser } = require('@validate/user/change-password-user.validate.js');
 
 class UserController {
 
     async create(req, res, next) {
         try {
             const body = req.body;
-
-            // validate
-            await validateCreateUser(body);
 
             const { password: plainPassword, ...userData } = body;
 
@@ -22,12 +17,14 @@ class UserController {
 
             const newUser = await userModel.create({ ...userData, password });
 
+            const { password: skipPass, ...returnUser } = newUser['dataValues'] ?? {};
+
             return res
-            .status(201)
-            .json({
-                status: 'success',
-                data: newUser,
-            })
+                .status(201)
+                .json({
+                    status: 'success',
+                    data: returnUser,
+                })
 
         } catch (err) {
             next(err);
@@ -49,106 +46,132 @@ class UserController {
         }
     }
 
-    async login(req, res, next) {
+    async update(req, res, next) {
         try {
-            const { email, password } = req.body;
+            // find user
+            const { id: userId } = req.params;
+            const user = await userModel.findOne(userId);
+            
+            if (user) {
+                const { 
+                    fullName = user.fullName, 
+                    mobile = user.mobile, 
+                    role = user.role, 
+                } = req.body;
+                
+                user.fullName = fullName;
+                user.mobile = mobile;
+                user.role = role;
 
-            // step1: validate body data
-            await validateLoginUser({ email, password });
-
-            // step2: find user by email
-            const user = await userModel.findOneByEmail(email);
-            if (!user) {
-                const error = new Error();
-                error.message = 'Email or Password Incorrect';
-                error.status = 401;
-                return next(error);
-            }
-
-            // step3: compare password
-            const isMatch = await bcrypt.compare(password, user.password);
-            if (isMatch) {
-                const payload = {
-                    fullName: user.fullName,
-                    mobile: user.mobile,
-                    email: user.email,
-                    role: user.role,
-                }
-                const token = jwt.sign(payload, process.env.JWT_KEY, {
-                    expiresIn: '6h',
-                });
+                // update data
+                const updateUser = await user.save();
                 return res
                         .status(200)
                         .json({
-                            status: 'success',
-                            token,
+                            status: 200,
+                            data: updateUser,
                         })
             } else {
                 const error = new Error();
-                error.message = 'Email or Password Incorrect';
                 error.status = 401;
+                error.message = "Can't Find User for update !";
                 return next(error);
             }
-            
         } catch (err) {
             next(err);
         }
     }
 
-    async register(req, res, next) {
-        const { email, password } = req.body;
-
+    //change user info with own
+    async changeInfo(req, res, next) {
         try {
             // validate body data
-            await validateRegisterUser({ email, password });
+            await validateUpdateUser(req.body);
 
-            // hash password
-            const salt = 10;
-            const passwordHash = await bcrypt.hash(password, salt);
+            // find user
+            const { userId } = req.user;
+            console.log({userId})
+            const user = await userModel.findOne(userId);
+            console.log({user})
+            
+            if (user) {
+                const { 
+                    fullName = user.fullName, 
+                    mobile = user.mobile, 
+                    role = user.role, 
+                } = req.body;
+                
+                user.fullName = fullName;
+                user.mobile = mobile;
+                user.role = role;
 
-            // save user in db
-            const newUser = await userModel.create({ email, password: passwordHash });
-
-            return res
-                .status(200)
-                .json({
-                    status: 'success',
-                    data: newUser,
-                })
+                // update data
+                const updateUser = await user.save();
+                return res
+                        .status(200)
+                        .json({
+                            status: 200,
+                            data: updateUser,
+                        })
+            } else {
+                const error = new Error();
+                error.status = 401;
+                error.message = "Can't Find User for update !";
+                return next(error);
+            }
         } catch (err) {
             next(err);
         }
-
-
     }
 
-    async isAdmin(req, res, next) {
-        console.log({req: req.user})
+    async changePassword(req, res, next) {
         try {
-            const { role } = req.user;
-            if (role === 'admin') {
-                return res
-                    .status(200)
-                    .json({
-                        status: 'success',
-                        isAdmin: true,
-                    });
+            console.log('first')
+            // validate body data
+            await validateChangePasswordUser(req.body);
+
+            // find user
+            const { userId } = req.user;
+            console.log({req})
+            const user = await userModel.findOne(userId);
+
+            if (user) {
+                const { currentPassword, password } = req.body;
+
+                const isMatch = await bcrypt.compare(currentPassword, user.password);
+
+                if (isMatch) {
+                    user.password = password;
+    
+                    // update data
+                    const updateUser = await user.save();
+                    return res
+                            .status(200)
+                            .json({
+                                status: 200,
+                                data: updateUser,
+                            })
+                } else {
+                    const error = new Error();
+                    error.status = 401;
+                    error.message = "Current Password Is Not Correct !";
+                    return next(error);
+                }
             } else {
-                return res
-                .status(200)
-                .json({
-                    status: 'success',
-                    isAdmin: false,
-                });
+                const error = new Error();
+                error.status = 401;
+                error.message = "Can't Find User for Change Password !";
+                return next(error);
             }
         } catch (err) {
-            return res
-                .status(200)
-                .json({
-                    status: 'success',
-                    isAdmin: false,
-                });
+            console.log({err})
+            next(err);
         }
+    }
+
+    // import users from xlsx
+    async importFromXlsx(req, res, next) {
+        console.log({ req: req.file })
     }
 }
 

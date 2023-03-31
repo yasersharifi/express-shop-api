@@ -1,4 +1,4 @@
-const User = require('./../entity/user.entity');
+const User = require('@entity/user.entity');
 
 class UserModel {
     async create(user) {
@@ -19,6 +19,9 @@ class UserModel {
 
     async findAll() {
         return await User.findAll({
+            attributes: {
+                exclude: ['password']
+            },
             order: [
                 ['id', 'DESC']
             ]

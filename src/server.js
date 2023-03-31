@@ -1,4 +1,4 @@
 const app = require('./main');
-const bootstrap = require('./bootstrap');
+const bootstrap = require('@/bootstrap');
 
 bootstrap(app);

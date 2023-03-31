@@ -1,12 +1,12 @@
 const Yup = require('../../utils/Yup');
 
 const schema = Yup.object().shape({
-    email: Yup.string().email().required().label('Email'),
+    currentPassword: Yup.string().required().label('Current Password'),
     password: Yup.string().required().label('Password'),
 });
 
-async function validateRegisterUser(data) {
+async function validateChangePasswordUser(data) {
     return await schema.validate(data, { abortEarly: false });
 }
 
-module.exports = { validateRegisterUser }
+module.exports = { validateChangePasswordUser }
