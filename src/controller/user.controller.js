@@ -50,26 +50,27 @@ class UserController {
         try {
             // find user
             const { id: userId } = req.params;
-            const user = await userModel.findOne(userId);
+            const findUser = await userModel.findOne(userId);
             
-            if (user) {
+            if (findUser) {
                 const { 
-                    fullName = user.fullName, 
-                    mobile = user.mobile, 
-                    role = user.role, 
+                    fullName = findUser.fullName, 
+                    mobile = findUser.mobile, 
+                    role = findUser.role, 
                 } = req.body;
                 
-                user.fullName = fullName;
-                user.mobile = mobile;
-                user.role = role;
+                findUser.fullName = fullName;
+                findUser.mobile = mobile;
+                findUser.role = role;
 
                 // update data
-                const updateUser = await user.save();
+                const updateUser = await findUser.save();
+                const { password, ...user } = updateUser['dataValues'];
                 return res
                         .status(200)
                         .json({
                             status: 200,
-                            data: updateUser,
+                            data: user,
                         })
             } else {
                 const error = new Error();
