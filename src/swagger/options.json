@@ -1,0 +1,27 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Shopping Api with express & Sequelize",
+        "version": "1.0",
+        "title": "Nodejs Shop API",
+        "contact": {
+            "email": "yassersharifi74@gmail.com"
+        }
+    },
+
+    "externalDocs": {
+        "description": "Read about the developer",
+        "url": "http://127.0.0.1:3000/docs"
+    },
+
+    "host": "http://127.0.0.1:3000",
+
+    "schemes": ["http", "https"],
+
+    "tags": [
+        {
+            "name": "user",
+            "description": "Operations about user"
+        }
+    ]
+}
