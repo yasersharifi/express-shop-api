@@ -1,8 +1,10 @@
-const user = require("./user.json");
+const userPaths = require('./user');
+const authPaths = require('./auth');
 
 const paths = {
     paths: {
-        ...user,
+        ...userPaths,
+        ...authPaths,
     },
 };
 

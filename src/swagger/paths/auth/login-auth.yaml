@@ -1,0 +1,31 @@
+---
+"/auth/login":
+    post:
+        tags:
+            - user
+        summary: Create user
+        description: ''
+        produces:
+            - application/xml
+            - application/json
+        parameters:
+            - in: formData
+              name: email
+              type: string
+              description: email of the user
+              schema:
+                  "$ref": "#/definitions/User"
+
+            - in: formData
+              name: password
+              type: string
+              description: user password
+              schema:
+                "$ref": "#/definitions/User"
+        responses:
+          '201':
+            description: successful operation
+          '401':
+            description: Invalid fullName/mobile/email/role/password supplied
+
+    
