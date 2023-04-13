@@ -1,7 +1,7 @@
 ---
 swagger: '2.0'
 info:
-    description: Shopping Api with express & Sequelize
+    description: Shopping Api with Express & Sequelize
     version: '1.0'
     title: Nodejs Shop API
     contact:

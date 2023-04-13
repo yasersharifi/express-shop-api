@@ -1,0 +1,37 @@
+---
+"/auth/register":
+    post:
+        tags:
+            - user
+        summary: Register User
+        description: ''
+        produces:
+            - application/json
+        parameters:
+            - in: formData
+              name: email
+              type: string
+              description: Email
+              schema:
+                  "$ref": "#/definitions/User"
+
+            - in: formData
+              name: password
+              type: string
+              description: Password
+              schema:
+                "$ref": "#/definitions/User"
+
+            - in: formData
+              name: confirmPassword
+              type: string
+              description: Confirm Password
+              schema:
+                "$ref": "#/definitions/User"
+        responses:
+          '201':
+            description: successful operation
+          '401':
+            description: Invalid email/password supplied
+
+    

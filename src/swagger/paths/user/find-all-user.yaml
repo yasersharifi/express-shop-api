@@ -1,0 +1,19 @@
+---
+"get":
+    tags:
+        - user
+    summary: Find All User
+    description: ''
+    produces:
+        - application/xml
+        - application/json
+    parameters:
+        - in: header
+          name: token
+          type: string
+          description: Give Token For Check Access Of User
+    responses:
+      '201':
+        description: successful operation
+      '401':
+        description: Invalid fullName/mobile/email/role/password supplied

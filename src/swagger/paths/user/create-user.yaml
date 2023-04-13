@@ -1,59 +1,56 @@
 ---
-"/users":
-    post:
-        tags:
+"post":
+    tags:
+        - user
+    summary: Create user
+    description: ''
+    produces:
+        - application/xml
+        - application/json
+    parameters:
+        - in: formData
+          name: fullName
+          type: string
+          description: fullName of the user
+          schema:
+              "$ref": "#/definitions/User"
+
+        - in: formData
+          name: mobile
+          type: string
+          description: mobile of the user
+          schema:
+            "$ref": "#/definitions/User"
+
+        - in: formData
+          name: email
+          type: string
+          description: email of the user
+          schema:
+            "$ref": "#/definitions/User"
+
+        - in: formData
+          name: role
+          type: string
+          default: user
+          enum:
             - user
-        summary: Create user
-        description: ''
-        produces:
-            - application/xml
-            - application/json
-        parameters:
-            - in: formData
-              name: fullName
-              type: string
-              description: fullName of the user
-              schema:
-                  "$ref": "#/definitions/User"
+            - admin
+            - moderate
+            - support
+          description: role of user
+          schema:
+            "$ref": "#/definitions/User"
 
-            - in: formData
-              name: mobile
-              type: string
-              description: mobile of the user
-              schema:
-                "$ref": "#/definitions/User"
+        - in: formData
+          name: password
+          type: string
+          description: user password
+          schema:
+            "$ref": "#/definitions/User"
 
-            - in: formData
-              name: email
-              type: string
-              description: email of the user
-              schema:
-                "$ref": "#/definitions/User"
-
-            - in: formData
-              name: role
-              type: string
-              default: user
-              enum:
-                - user
-                - admin
-                - moderate
-                - support
-              description: role of user
-              schema:
-                "$ref": "#/definitions/User"
-
-            - in: formData
-              name: password
-              type: string
-              description: user password
-              schema:
-                "$ref": "#/definitions/User"
-
-        responses:
-          '201':
-            description: successful operation
-          '401':
-            description: Invalid fullName/mobile/email/role/password supplied
-
-    
+    responses:
+      '201':
+        description: successful operation
+      '401':
+        description: Invalid fullName/mobile/email/role/password supplied
