@@ -17,5 +17,6 @@ BadRequest:
         errors:
             type: object
             description: Errors With Key Value
+            example: "{ email: 'Email format is not correct !'}"
     xml:
         name: BadRequest
