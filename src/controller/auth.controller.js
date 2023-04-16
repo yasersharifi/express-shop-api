@@ -32,7 +32,8 @@ class AuthController {
                 return res
                         .status(200)
                         .json({
-                            status: 'success',
+                            status: 200,
+                            statusText: 'success',
                             token,
                         })
             } else {

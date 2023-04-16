@@ -1,0 +1,22 @@
+---
+Unauthorized:
+    type: object
+    required:
+      - status
+      - statusText
+      - message
+    properties:
+        status:
+            type: number
+            required: true
+            enum: [401]
+        statusText:
+            type: string
+            required: true
+            enum: ['error']
+        message:
+            type: string
+            required: true
+            enum: ['unauthorized!']
+    xml:
+        name: Unauthorized

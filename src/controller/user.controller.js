@@ -36,7 +36,8 @@ class UserController {
             return res
             .status(200)
             .json({
-                status: 'success',
+                status: 200,
+                statusText: 'success',
                 data: users,
             })
         } catch (err) {

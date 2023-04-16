@@ -87,7 +87,7 @@ function hasAccess (req, res, next, options) {
     } catch (err) {
         console.log({err})
         const error = new Error();
-        error.message = 'Not Access This Content';
+        error.message = 'forbidden!';
         error.status = 403;
         next(error);
     }

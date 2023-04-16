@@ -2,8 +2,8 @@ const jwt = require('jsonwebtoken');
 
 function checkLogin(req, res, next) {
     try {
-        const authorization = req.headers.authorization;
-        if (authorization) {
+        if (req?.headers?.authorization) {
+            const authorization = req.headers.authorization;
             const token = authorization.split(' ')[1];
             if (token) {
                 const tokenDecode = jwt.verify(token, process.env.JWT_KEY);
@@ -11,13 +11,13 @@ function checkLogin(req, res, next) {
                 return next();
             }
         } 
-
+        console.log({authorization: req.headers.authorization}, req.headers);
         const error = new Error();
-        error.message = 'Auth Failed !';
+        error.message = 'unAuthorized!';
         error.status = 401;
-        next(error);
+        return next(error);
     } catch(err) {
-        next(err);
+        return next(err);
     }
 }
 

@@ -6,7 +6,6 @@
         summary: Create user
         description: ''
         produces:
-            - application/xml
             - application/json
         parameters:
             - in: formData
@@ -23,9 +22,24 @@
               schema:
                 "$ref": "#/definitions/User"
         responses:
-          '201':
-            description: successful operation
-          '401':
-            description: Invalid fullName/mobile/email/role/password supplied
+          200:
+            description: successful Login
+            schema:
+              type: object
+              properties:
+                status: 
+                  type: number
+                  required: true
+                  enum: [200]
+                statusText: 
+                  type: string
+                  required: true
+                  enum: ['success']
+                token: 
+                  type: string
+          400:
+            description: BadRequest
+            schema:
+              $ref: '#/definitions/BadRequest'
 
     

@@ -13,6 +13,12 @@ host: 127.0.0.1:3000
 schemes:
     - http
     - https
+securityDefinitions:
+    Bearer:  
+        in: header  
+        type: apiKey  
+        name: Authorization 
+        description: "Enter the token with the Bearer: prefix, e.g. 'Bearer abcde12345'"
 tags:
     - name: user
       description: Operations about user

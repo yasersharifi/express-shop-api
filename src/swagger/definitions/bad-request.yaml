@@ -1,0 +1,21 @@
+---
+BadRequest:
+    type: object
+    required:
+      - status
+      - statusText
+      - errors
+    properties:
+        status:
+            type: number
+            required: true
+            enum: [400]
+        statusText:
+            type: string
+            required: true
+            enum: ['error']
+        errors:
+            type: object
+            description: Errors With Key Value
+    xml:
+        name: BadRequest
